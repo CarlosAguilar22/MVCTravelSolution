@@ -9,7 +9,7 @@ using DataLibrary.DataAccess;
 
 namespace DataLibrary.BusinessLogic
 {
-    public class TravelProcessor: IProcessor 
+    public class TravelProcessor : IProcessor
     {
         //public static int CreateTavel(int agencyId,string titular, DateTime startDate, DateTime endDate, double totalCost, 
         //                        string description, string notes)
@@ -20,17 +20,6 @@ namespace DataLibrary.BusinessLogic
             {
                 using (var db = new TravelAgenciesContext())
                 {
-                    //db.Travel.Add(new Travel
-                    //{
-                    //    AgencyID = agencyId,
-                    //    Titular = titular,
-                    //    StartDate = startDate,
-                    //    EndDate = endDate,
-                    //    TotalCost = Convert.ToDecimal(totalCost),
-                    //    Description = description,
-                    //    Notes = notes
-                    //});
-
                     //ObjectType
                     Type travelModelType = travelModel.GetType();
                     PropertyInfo[] propTravelModel = travelModelType.GetProperties();
@@ -51,7 +40,7 @@ namespace DataLibrary.BusinessLogic
                             currentTravelProp.SetValue(travel, currentTravelModelProp.GetValue(travelModel));
                         }
                     }
-                    
+ 
                     db.Travel.Add(travel);
                     db.SaveChanges();
                     return 1;
@@ -65,14 +54,16 @@ namespace DataLibrary.BusinessLogic
 
         public List<Object> Load()
         {
-            List<TravelM> lstTravels = new List<TravelM>();
+            List<Travel> lstTravels = new List<Travel>();
 
             using (var db = new TravelAgenciesContext())
             {
                 foreach (var row in db.Travel)
                 {
-                    lstTravels.Add(new TravelM
+                    lstTravels.Add(new Travel
                     {
+                        Id = row.Id,
+                        AgencyID = row.AgencyID,
                         Titular = row.Titular,
                         StartDate = row.StartDate,
                         EndDate = row.EndDate,
@@ -83,8 +74,20 @@ namespace DataLibrary.BusinessLogic
                         Notes = row.Notes
                     });
                 }
-            }   
+            }
             return lstTravels.ToList<Object>();
         }
+
+        public Object GetModelById(int Id)
+        {
+            Travel travel = null;
+            using (var db = new TravelAgenciesContext())
+            {
+                travel = db.Travel.Find(Id);
+            }
+
+            return travel;
+        }
+
     }
 }

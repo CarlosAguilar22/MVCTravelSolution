@@ -12,6 +12,8 @@ namespace DataLibrary.Models
         public TravelM()
         {
         }
+
+        public int State { get; set; }
     }
 
 }

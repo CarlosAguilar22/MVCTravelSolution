@@ -15,5 +15,6 @@ namespace DataLibrary.BusinessLogic
     {
         int Create(Object travel);
         List<Object> Load();
+        Object GetModelById(int Id);
     }
 }

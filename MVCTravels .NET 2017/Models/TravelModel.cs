@@ -9,19 +9,22 @@ namespace MVCTravels.NET_2017.Models
     public class TravelModel
     {
         [Editable(false)]
+        public int Id{ get; set; }
+
+        [Editable(false)]
         public int AgencyID { get; set; }
 
         [Display(Name = "Nombre del Titular")]
         [Required(ErrorMessage ="Por favor ingresa el nombre del titular")]
         public string Titular { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name="Fecha Inicial del Periodo Vacacional")]
         [Required(ErrorMessage = "Por favor ingresa la Fecha Inicial")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Fecha Final del Periodo Vacacional")]
         [Required(ErrorMessage = "Por favor ingresa la Fecha Final")]
         [DataType(DataType.Date)]
