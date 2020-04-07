@@ -13,8 +13,9 @@ namespace DataLibrary.BusinessLogic
 
     public interface IProcessor
     {
-        int Create(Object travel);
+        int Create(Object objToProcess);
         List<Object> Load();
         Object GetModelById(int Id);
+        int Edit(Object objToProcess, int Id);
     }
 }

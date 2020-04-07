@@ -11,13 +11,14 @@ using DataLibrary.DataAccess;
 namespace MVCTravels.NET_2017.Controllers
 {
     public class TravelController : Controller
-    {        
+    {
+        IProcessor travelProcessor = FactoryProcessor.CreateProcessor(ClientModelType.Travel);
+
         // GET: Travel
         public ActionResult Index()
         {
             ViewBag.Message = "Listado de viajes";
 
-            IProcessor travelProcessor = FactoryProcessor.CreateProcessor(ClientModelType.Travel);
             List<Object> travelsDB = travelProcessor.Load();
             
             List<TravelModel> travels = new List<TravelModel>();
@@ -57,7 +58,6 @@ namespace MVCTravels.NET_2017.Controllers
             try
             {
                 travelModel.AgencyID = 1;
-                IProcessor travelProcessor = FactoryProcessor.CreateProcessor(ClientModelType.Travel);
                 travelProcessor.Create(travelModel);               
                 return RedirectToAction("Index");
             }
@@ -72,7 +72,6 @@ namespace MVCTravels.NET_2017.Controllers
         {
             ViewBag.Message = "Edición del viaje seleccionado";
 
-            IProcessor travelProcessor = FactoryProcessor.CreateProcessor(ClientModelType.Travel);
             Object travelObjectDB = travelProcessor.GetModelById(Id);
             Travel selectedTravelDB = travelObjectDB as Travel;
 
@@ -93,10 +92,21 @@ namespace MVCTravels.NET_2017.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditTravel()
+        public ActionResult EditTravel(TravelModel travelModel)
         {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View();
 
-            return View();
+                travelProcessor.Edit(travelModel, travelModel.Id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error al editar el viaje - " + ex.Message);
+                return View();
+            }
         }
     }
 }
